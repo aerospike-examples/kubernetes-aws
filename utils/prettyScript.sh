@@ -39,8 +39,14 @@ wait_for_space_press(){
 }
 
 exec_command(){
+	exec_command_no_prompt "$1"
+	echo -n "$PROMPT"
+	wait_for_space_press
+}
+
+exec_command_no_prompt(){
 	printf "${ESCAPE_SEQ}${BOLD}m$1${NEWLINE}"
-	# wait_for_space_press
+	wait_for_space_press
 	if [ $DEMO -eq 1 ]
 	then
 		OUTPUT="Test output for $1"
@@ -53,8 +59,6 @@ exec_command(){
 	else 
 		printf "${RESET}"
 	fi
-	echo -n "$PROMPT"
-	wait_for_space_press
 }
 
 get_prompt(){

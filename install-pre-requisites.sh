@@ -46,4 +46,5 @@ print_comment 'Installing helm using instructions from https://helm.sh/docs/intr
 wait_for_space_press
 exec_command "curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3"
 exec_command "chmod 700 get_helm.sh"
-exec_command "./get_helm.sh"
+exec_command_no_prompt "./get_helm.sh"
+print_comment 'Pre-requisites install complete'
