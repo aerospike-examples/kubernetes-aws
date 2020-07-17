@@ -47,7 +47,7 @@ exec_command(){
 	else
 		OUTPUT=$(eval "$1")
 	fi
-	if [ ! -z $OUTPUT ]
+	if [ ! -z "$OUTPUT" ]
 	then
 		printf "${RESET}${OUTPUT}${NEWLINE}"
 	fi
