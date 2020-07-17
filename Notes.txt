@@ -1,0 +1,72 @@
+# Initialize Vagrant box
+vagrant init centos/7
+vagrant up
+vagrant ssh
+
+sudo yum -y install unzip git
+
+# Install Kubernetes
+# Instructions from https://kubernetes.io/docs/tasks/tools/install-kubectl/
+
+cat <<EOF > /tmp/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+
+sudo mv /tmp/kubernetes.repo /etc/yum.repos.d/kubernetes.repo
+sudo yum install -y kubectl
+
+# Install aws command line utility
+# Instructions from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
+
+cd /tmp
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip 
+sudo ./aws/install
+
+# Install eksctl - command line tool for creating AWS Kubernetes clusters (EKS)
+# Instructions from https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
+# Install Helm
+# Instructions from https://helm.sh/docs/intro/install/
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+# Now need to set up AWS credentials
+# Use pbcopy to avoid displaying AWS account id
+
+aws configure
+
+eksctl create cluster --name aero-k8s-cluster -r us-east-2
+
+kubectl config get-contexts
+
+helm repo add aerospike https://aerospike.github.io/aerospike-kubernetes
+helm install cluster1 aerospike/aerospike
+
+kubectl get all --namespace default -l "release=cluster1, chart=aerospike-5.0.0" 
+kubectl get pods --watch --namespace default -l "release=cluster1, chart=aerospike-5.0.0"
+
+kubectl create -f /vagrant/deployment.yml 
+CONTAINER=$(kubectl get pod -l "app=aerospike-java-client" -o jsonpath="{.items[0].metadata.name}")
+kubectl exec $CONTAINER -- /aerospike-client-java/benchmarks/run_benchmarks -h cluster1-aerospike
+
+kubectl config delete-context EKS@aero-k8s-cluster.us-east-2.eksctl.io
+kubectl config delete-cluster aero-k8s-cluster.us-east-2.eksctl.io
+eksctl delete cluster aero-k8s-cluster -r us-east-2
+
+docker build -t aerospike/java-client -t ktune/aerospike:java-client .
+docker push ktune/aerospike:java-client
+
+
+
