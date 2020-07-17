@@ -25,7 +25,6 @@ print_header(){
 
 print_comment(){
 	printf "${ESCAPE_SEQ}${BOLD};${RED}m"
-	printf "$NEWLINE"
 	printf "$1${NEWLINE}"
 	printf "$RESET"
 }
