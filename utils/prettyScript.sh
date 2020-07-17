@@ -27,6 +27,7 @@ print_comment(){
 	printf "${ESCAPE_SEQ}${BOLD};${RED}m"
 	printf "$1${NEWLINE}"
 	printf "$RESET"
+	echo -n "$PROMPT"	
 }
 
 wait_for_space_press(){
@@ -46,7 +47,10 @@ exec_command(){
 	else
 		OUTPUT=$(eval "$1")
 	fi
-	printf "${RESET}${OUTPUT}${NEWLINE}"
+	if [ ! -z $OUTPUT ]
+	then
+		printf "${RESET}${OUTPUT}${NEWLINE}"
+	fi
 	echo -n "$PROMPT"
 	wait_for_space_press
 }
