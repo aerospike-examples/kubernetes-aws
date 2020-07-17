@@ -39,7 +39,6 @@ wait_for_space_press(){
 }
 
 exec_command(){
-	printf "$NEWLINE"	
 	printf "${ESCAPE_SEQ}${BOLD}m$1${NEWLINE}"
 	# wait_for_space_press
 	if [ $DEMO -eq 1 ]
