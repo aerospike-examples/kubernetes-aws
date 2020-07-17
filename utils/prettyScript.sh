@@ -45,8 +45,9 @@ exec_command(){
 }
 
 exec_command_no_prompt(){
-	printf "${ESCAPE_SEQ}${BOLD}m$1${NEWLINE}"
+	printf "${ESCAPE_SEQ}${BOLD}m${1}"
 	wait_for_space_press
+	printf "${NEWLINE}"
 	if [ $DEMO -eq 1 ]
 	then
 		OUTPUT="Test output for $1"
@@ -63,7 +64,7 @@ exec_command_no_prompt(){
 
 get_prompt(){
 	HOST=$(echo $HOSTNAME | cut -d. -f1)
-	DIR=$(echo $PWD | awk 'BEGIN{FS="/"}{print $NF}')}
+	DIR=$(echo $PWD | awk 'BEGIN{FS="/"}{print $NF}')
 	PROMPT="[${USER}@${HOST} $DIR]$ "
 }
 
