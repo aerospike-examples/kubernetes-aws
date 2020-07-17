@@ -50,6 +50,8 @@ exec_command(){
 	if [ ! -z "$OUTPUT" ]
 	then
 		printf "${RESET}${OUTPUT}${NEWLINE}"
+	else 
+		printf "${RESET}"
 	fi
 	echo -n "$PROMPT"
 	wait_for_space_press
