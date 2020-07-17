@@ -49,6 +49,14 @@ exec_command(){
 		OUTPUT=$(eval "$1")
 	fi
 	printf "${RESET}${OUTPUT}${NEWLINE}"
+	echo -n "$PROMPT"
 	wait_for_space_press
 }
 
+get_prompt(){
+	HOST=$(echo $HOSTNAME | cut -d. -f1)
+	DIR=$(echo $PWD | awk 'BEGIN{FS="/"}{print $NF}')}
+	PROMPT="[${USER}@${HOST} $DIR]$ "
+}
+
+get_prompt
