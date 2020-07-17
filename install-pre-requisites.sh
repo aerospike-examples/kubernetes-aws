@@ -30,9 +30,9 @@ exec_command "sudo yum install -y kubectl"
 # Install aws command line utility
 # Instructions from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
 print_comment "Installing AWS CLI tool using instructions from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html"
-exec_command "cd /tmp"
+cd /tmp
 exec_command 'curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"'
-exec_command "unzip"
+exec_command "unzip awscliv2.zip"
 exec_command "sudo ./aws/install"
 
 print_comment "Installing eksctl - command line tool for creating AWS Kubernetes clusters using instructions from https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html"
