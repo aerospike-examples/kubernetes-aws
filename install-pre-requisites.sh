@@ -28,6 +28,10 @@ exec_command "$KUBECTL_INSTALL_COMMAND"
 exec_command "sudo mv /tmp/kubernetes.repo /etc/yum.repos.d/kubernetes.repo"
 exec_command "sudo yum install -y kubectl"
 
+print_comment "Also need unzip"
+wait_for_space_press
+exec_command "sudo yum install -y unzip"
+
 # Install aws command line utility
 # Instructions from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
 print_comment "Installing AWS CLI tool using instructions from https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html"
