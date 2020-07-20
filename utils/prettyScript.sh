@@ -37,6 +37,8 @@ print_header(){
 	printf "#${NEWLINE}"
 	printf "############################################${NEWLINE}"
 	printf "$RESET"
+	printf "${NEWLINE}"
+	echo -n "$PROMPT"	
 }
 
 print_comment_no_prompt(){
