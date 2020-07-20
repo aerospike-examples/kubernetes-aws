@@ -23,10 +23,14 @@ print_header(){
 	printf "$RESET"
 }
 
-print_comment(){
+print_comment_no_prompt(){
 	printf "${ESCAPE_SEQ}${BOLD};${RED}m"
 	printf "$1${NEWLINE}"
 	printf "$RESET"
+}
+
+print_comment(){
+	print_comment_no_prompt "$1"
 	echo -n "$PROMPT"	
 }
 
