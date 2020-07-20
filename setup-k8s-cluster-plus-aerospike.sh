@@ -18,7 +18,7 @@ exec_command "kubectl get all --namespace default -l 'release=cluster1, chart=ae
 exec_command "kubectl get pods --namespace default -l 'release=cluster1, chart=aerospike-5.0.0'"
 
 exec_command "kubectl create -f /vagrant/deployment.yml" 
-exec_command "CONTAINER=$(kubectl get pod -l 'app=aerospike-java-client' -o jsonpath='{.items[0].metadata.name}')"
+exec_command 'CONTAINER=$(kubectl get pod -l \"app=aerospike-java-client\" -o jsonpath=\"{.items[0].metadata.name}\")'
 exec_command "kubectl exec $CONTAINER -- /aerospike-client-java/benchmarks/run_benchmarks -h cluster1-aerospike"
 
 
