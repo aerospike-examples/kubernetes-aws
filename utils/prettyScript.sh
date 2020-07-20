@@ -69,6 +69,8 @@ exec_command_no_prompt(){
 	type "${1}"
 	wait_for_space_press
 	printf "${NEWLINE}"
+	printf "${RESET}"
+
 	if [ $DEMO -eq 1 ]
 	then
 		OUTPUT="Test output for $1"
@@ -77,9 +79,7 @@ exec_command_no_prompt(){
 	fi
 	if [ ! -z "$OUTPUT" ]
 	then
-		printf "${RESET}${OUTPUT}${NEWLINE}"
-	else 
-		printf "${RESET}"
+		printf "${OUTPUT}${NEWLINE}"
 	fi
 }
 
