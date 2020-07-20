@@ -53,12 +53,12 @@ print_comment(){
 }
 
 wait_for_space_press(){
-	read -n 1 -r key	
+	read -n 1 -r key -s	
 	while [ ! $key == " " ] && [ ! $key == "a" ]
 	do
 		read -n 1 -r key
 	done
-	if [ $key == "a" ]
+	if [ "$key" == "a" ]
 	then
 		REPEAT_COMMAND=1
 	else
