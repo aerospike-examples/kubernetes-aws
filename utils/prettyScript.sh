@@ -54,10 +54,16 @@ print_comment(){
 
 wait_for_space_press(){
 	read -n 1 -r key	
-	while [ ! $key == " " ]
+	while [ ! $key == " " ] && [ ! $key == "a" ]
 	do
 		read -n 1 -r key
 	done
+	if [ $key == "a" ]
+	then
+		REPEAT_COMMAND=1
+	else
+		REPEAT_COMMAND=0		
+	fi
 }
 
 exec_command(){
@@ -82,6 +88,11 @@ exec_command_no_prompt(){
 	if [ ! -z "$OUTPUT" ]
 	then
 		printf "${OUTPUT}${NEWLINE}"
+	fi
+	if [ $REPEAT_COMMAND == 1 ]
+	then
+		echo -n "$PROMPT"
+		exec_command_no_prompt "$1"
 	fi
 }
 

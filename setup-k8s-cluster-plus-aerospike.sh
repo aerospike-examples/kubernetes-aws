@@ -15,7 +15,7 @@ exec_command "helm repo add aerospike https://aerospike.github.io/aerospike-kube
 exec_command "helm install cluster1 aerospike/aerospike"
 
 exec_command "kubectl get all --namespace default -l 'release=cluster1, chart=aerospike-5.0.0'" 
-exec_command "kubectl get pods --watch --namespace default -l 'release=cluster1, chart=aerospike-5.0.0'"
+exec_command "kubectl get pods --namespace default -l 'release=cluster1, chart=aerospike-5.0.0'"
 
 exec_command "kubectl create -f /vagrant/deployment.yml" 
 exec_command "CONTAINER=$(kubectl get pod -l 'app=aerospike-java-client' -o jsonpath='{.items[0].metadata.name}')"
