@@ -1,5 +1,6 @@
 #!/bin/bash
 
+## Constants relating to displaying colours
 ESCAPE_SEQ="\e["
 BLACK=30
 RED=31
@@ -10,7 +11,22 @@ RESET="${ESCAPE_SEQ}0m"
 
 NEWLINE="\n"
 
-DEMO=0
+# If DEMO = 1 then commands supplied to exec_command will be executed
+# If DEMO = 1 dummy output will be shown
+DEMO=1
+
+# 'Typing' speed
+TYPE_PERIOD_PER_KEYSTROKE=0.015
+
+function type
+{
+    text="$1"
+
+    for i in $(seq 0 ${#text}) ; do
+        printf "${text:$i:1}"
+        sleep ${TYPE_PERIOD_PER_KEYSTROKE}
+    done
+}
 
 print_header(){
 	printf "$NEWLINE"	
@@ -49,7 +65,8 @@ exec_command(){
 }
 
 exec_command_no_prompt(){
-	printf "${ESCAPE_SEQ}${BOLD}m${1}"
+	printf "${ESCAPE_SEQ}${BOLD}m"
+	type "${1}"
 	wait_for_space_press
 	printf "${NEWLINE}"
 	if [ $DEMO -eq 1 ]
