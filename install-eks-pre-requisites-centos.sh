@@ -1,9 +1,7 @@
 #!/bin/bash
 
-
 echo "Installing kubectl, AWS Command Line Utility, eksctl and helm"
 echo
-
 
 # First we need to configure yum to use https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64 as a repo"
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
@@ -40,5 +38,10 @@ PATH=$PATH:/usr/local/bin
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
 chmod 700 get_helm.sh
 ./get_helm.sh
+
+# Tidy up
+rm -rf aws
+rm awscliv2.zip
+rm get_helm.sh
 
 echo "EKS pre-requisites install complete"
