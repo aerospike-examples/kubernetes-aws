@@ -2,24 +2,31 @@
 
 source utils/prettyScript.sh
 
+# Disable demo only mode for prettyScript
 DEMO=0
 
-print_header "Set up an EKS K8s cluster. Within that K8s cluster, create an Aerospike cluster, run an Aerospike java client"
+DEPLOYMENT_NAME=demo
+EKS_CLUSTER_NAME=aero-k8s-cluster
+
+print_header "Set up an EKS K8s cluster. Within that K8s cluster, create an Aerospike cluster, run an Aerospike java client. Press space to continue"
 wait_for_space_press
 
-exec_command "eksctl create cluster --name aero-k8s-cluster -r us-east-2"
+print_comment "Creating EKS cluster. This will take approximately 30 minutes"
+eksctl create cluster --name ${EKS_CLUSTER_NAME}
 
-exec_command "kubectl config get-contexts"
+print_comment "Showing kubectl contexts - you should see the ${EKS_CLUSTER_NAME} in here"
+kubectl config get-contexts
 
-exec_command "helm repo add aerospike https://aerospike.github.io/aerospike-kubernetes"
-exec_command "helm install cluster1 aerospike/aerospike"
+print_comment "Get the aerospike chart and install the cluster, giving it a name of "
+helm repo add aerospike https://aerospike.github.io/aerospike-kubernetes
+helm install ${DEPLOYMENT_NAME} aerospike/aerospike --set enableAerospikeMonitoring=true
 
-exec_command "kubectl get all --namespace default -l 'release=cluster1, chart=aerospike-5.0.0'" 
-exec_command "kubectl get pods --namespace default -l 'release=cluster1, chart=aerospike-5.0.0'"
+print_comment "Will run kubectl get all until changes stop. At that point press the space bar to continue"
+exec_command 'kubectl get all --watch --namespace default -l "release=${DEPLOYMENT_NAME}, chart=aerospike-5.0.0"'
 
-exec_command "kubectl create -f /vagrant/deployment.yml" 
-exec_command 'echo $(kubectl get pod -l "app=aerospike-java-client" -o jsonpath="{.items[0].metadata.name}") > CONTAINER'
-exec_command "cat CONTAINER"
-exec_command "kubectl exec $(cat CONTAINER) -- /aerospike-client-java/benchmarks/run_benchmarks -h cluster1-aerospike"
 
+kubectl create -f aero-client-deployment.yml
+
+CONTAINER=$(kubectl get pod -l "app=aerospike-java-client" -o jsonpath="{.items[0].metadata.name}")
+kubectl exec $CONTAINER -- /aerospike-client-java/benchmarks/run_benchmarks -h ${DEPLOYMENT_NAME}-aerospike
 
