@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source utils/prettyScript.sh
+source ../utils/prettyScript.sh
 
 DEMO=0
 

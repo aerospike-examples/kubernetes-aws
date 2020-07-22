@@ -4,6 +4,8 @@ vagrant up
 vagrant ssh
 
 sudo yum -y install unzip git
+git clone https://github.com/aerospike-examples/kubernetes-aws
+
 
 # Install Kubernetes
 # Instructions from https://kubernetes.io/docs/tasks/tools/install-kubectl/

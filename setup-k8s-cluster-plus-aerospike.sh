@@ -21,11 +21,13 @@ print_comment "Get the aerospike chart and install the cluster, giving it a name
 helm repo add aerospike https://aerospike.github.io/aerospike-kubernetes
 helm install ${DEPLOYMENT_NAME} aerospike/aerospike --set enableAerospikeMonitoring=true
 
-print_comment "Will run kubectl get all until changes stop. At that point press the space bar to continue"
-exec_command 'kubectl get all --watch --namespace default -l "release=${DEPLOYMENT_NAME}, chart=aerospike-5.0.0"'
+print_comment "Run kubectl get all until everything is in the running state. Press a to continue. Once in running state, press the space bar to progress"
+exec_command 'kubectl get all --namespace default -l "release=${DEPLOYMENT_NAME}, chart=aerospike-5.0.0"'
 
-
+print_comment "Deploying java client into environment. Press space to continue"
 kubectl create -f aero-client-deployment.yml
+
+print_comment "Execute java benchmarking. Press space to continue"
 
 CONTAINER=$(kubectl get pod -l "app=aerospike-java-client" -o jsonpath="{.items[0].metadata.name}")
 kubectl exec $CONTAINER -- /aerospike-client-java/benchmarks/run_benchmarks -h ${DEPLOYMENT_NAME}-aerospike
