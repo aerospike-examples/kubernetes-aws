@@ -1,9 +1,13 @@
 #!/bin/bash
 
+ACCOUNT_ID=${1}
+
 if [ -z $ACCOUNT_ID ]
 then
-	echo "You need to set ACCOUNT_ID to use this script"
+	echo "Usage : make-policy.sh <AWS_ACCOUNT_ID>"
 	exit 1
 fi
 
 sed "s/account-id/$ACCOUNT_ID/" eks.iam.policy.template > eks.iam.policy
+
+echo "Your EKS policy has been saved as eks.iam.policy"
