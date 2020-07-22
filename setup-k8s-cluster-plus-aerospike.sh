@@ -22,10 +22,13 @@ helm repo add aerospike https://aerospike.github.io/aerospike-kubernetes
 helm install ${DEPLOYMENT_NAME} aerospike/aerospike --set enableAerospikeMonitoring=true
 
 print_comment "Run kubectl get all until everything is in the running state. Press a to continue. Once in running state, press the space bar to progress"
-exec_command 'kubectl get all --namespace default -l "release=${DEPLOYMENT_NAME}, chart=aerospike-5.0.0"'
+exec_command "kubectl get all --namespace default -l 'release=${DEPLOYMENT_NAME}, chart=aerospike-5.0.0'"
 
 print_comment "Deploying java client into environment. Press space to continue"
 kubectl create -f aero-client-deployment.yml
+
+print_comment "Run kubectl get all until java client deployment is in the running state. Press a to continue. Once in running state, press the space bar to progress"
+exec_command "kubectl get all --namespace default -l 'app=aerospike-java-client'"
 
 print_comment "Execute java benchmarking. Press space to continue"
 
