@@ -24,14 +24,22 @@
                 "iam:PassRole",
                 "iam:PutRolePolicy",
                 "iam:RemoveRoleFromInstanceProfile",
-                "iam:CreateServiceLinkedRole",
                 "iam:ListRoleTags"
             ],
             "Resource": [
                 "arn:aws:iam::account-id:instance-profile/eksctl-*",
                 "arn:aws:iam::account-id:role/eksctl-*",
-                "arn:aws:iam::account-id:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup",
+                "arn:aws:iam::account-id:role/aws-service-role/eks*",
                 "arn:aws:iam::account-id:oidc-provider/oidc.eks.*"                
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::account-id:role/*"
             ]
         },
         {
@@ -42,19 +50,6 @@
                 "ssm:DescribeParameters"
             ],
             "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": "ssm:GetParameter",
-            "Resource": "arn:aws:ssm::::parameter/"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ssm:GetParameter",
-                "ssm:GetParameters"
-            ],
-            "Resource": "arn:aws:ssm::::parameter/*"
         },
         {
             "Effect": "Allow",
