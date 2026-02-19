@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: docker
+    directory: /aerospike-java-client-build
+    schedule:
+      interval: daily

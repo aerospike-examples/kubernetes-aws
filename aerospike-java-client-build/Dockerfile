@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:7@sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
 
 RUN yum updateinfo && \
 yum -y install install java-1.8.0-openjdk
@@ -13,7 +13,7 @@ cd aerospike-client-java && \
 # This stage pulls the compiled JavaScript code from the stage 1 intermediate image.
 # This stage builds the final Docker image that we'll use in production.
 #
-FROM centos:7
+FROM centos:7@sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
 
 RUN yum updateinfo && \
 yum -y install install java-1.8.0-openjdk
